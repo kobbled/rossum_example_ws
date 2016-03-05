@@ -1,0 +1,3 @@
+ROUTINE a_clrscr FROM liba
+
+ROUTINE a_do_smthng(x : INTEGER) FROM liba

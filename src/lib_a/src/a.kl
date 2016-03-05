@@ -1,0 +1,35 @@
+
+PROGRAM liba
+%ALPHABETIZE
+%COMMENT = ''
+%NOBUSYLAMP
+%NOLOCKGROUP
+%NOPAUSE = COMMAND + TPENABLE + ERROR
+
+%INCLUDE lib_a\a.th
+
+%INCLUDE lib_a\a.h
+
+%INCLUDE klrdutil
+
+
+BEGIN
+END liba
+
+
+
+
+ROUTINE a_clrscr
+BEGIN
+	CLR_STND_SCR(0)
+	FORCE_SPMENU(tp_panel, SPI_TPUSER, 1)
+END a_clrscr
+
+
+
+
+ROUTINE a_do_smthng
+BEGIN
+	WRITE TPDISPLAY(CR, 'liba: smthng:', x, CR)
+	WRITE TPDISPLAY(CR, 'liba: my_const:', MY_CONST, CR)
+END a_do_smthng

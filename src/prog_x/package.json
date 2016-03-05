@@ -1,0 +1,16 @@
+{
+  "manver" : "1",
+  "project" : "prog_x",
+  "description" : "my long description of prog_x",
+  "version" : "0.0.2",
+  "license" : "Apache 2.0",
+  "source" : [
+    "src/prog_x.kl"
+  ],
+  "includes" : [
+    "include"
+  ],
+  "depends" : [
+    "lib_a"
+  ]
+}

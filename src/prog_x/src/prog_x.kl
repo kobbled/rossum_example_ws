@@ -1,0 +1,17 @@
+
+PROGRAM prog_x
+%ALPHABETIZE
+%COMMENT = ''
+%NOBUSYLAMP
+%NOLOCKGROUP
+%NOPAUSE = COMMAND + TPENABLE + ERROR
+
+%INCLUDE lib_a\a.th
+
+%INCLUDE lib_a\a.h
+
+
+BEGIN
+	a_clrscr
+	a_do_smthng(1)
+END prog_x
