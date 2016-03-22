@@ -4,6 +4,7 @@
   "description" : "my long description of prog_x",
   "version" : "0.0.2",
   "license" : "Apache 2.0",
+  "author" : "G.A. vd. Hoorn",
   "source" : [
     "src/prog_x.kl"
   ],

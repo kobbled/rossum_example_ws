@@ -4,6 +4,7 @@
   "description" : "my long description",
   "version" : "0.0.1",
   "license" : "Apache 2.0",
+  "author" : "G.A. vd. Hoorn",
   "source" : [
     "src/a.kl",
     "src/foo.kl"
