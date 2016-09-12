@@ -6,11 +6,11 @@ PROGRAM liba
 %NOLOCKGROUP
 %NOPAUSE = COMMAND + TPENABLE + ERROR
 
-%INCLUDE lib_a\a.th
+%INCLUDE lib_a\a.klt
 
-%INCLUDE lib_a\a.h
+%INCLUDE lib_a\a.klh
 
-%INCLUDE klrdutil
+%INCLUDE klrdutil.kl
 
 
 BEGIN
