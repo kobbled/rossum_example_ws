@@ -12,10 +12,10 @@ To build it, in a Windows `cmd` session::
   
     rossum ..\src
   
-    make
+    ninja
 
-This should invoke `ktrans` with the appropriate arguments to build
-all binary targets of all discovered projects in the `build` directory.
+This will build all binary targets defined in the two example projects (`lib_a`
+and `prog_x`) and place the results in `build`.
 
 For more information on `rossum`, see [rossum][].
 
