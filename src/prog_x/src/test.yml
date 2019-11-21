@@ -1,0 +1,12 @@
+---
+# <- yaml supports comments, json does not
+# did you know you can embed json in yaml?
+# try uncommenting the next line
+# { foo: 'bar' }
+
+element:
+  - some text
+  - some other text
+class:
+  "@key": value
+  "#value": some text
