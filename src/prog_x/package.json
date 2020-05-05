@@ -13,6 +13,7 @@
     "include"
   ],
   "depends" : [
-    "lib_a"
+    "lib_a",
+    "ktransw-macros"
   ]
 }

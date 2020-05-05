@@ -6,12 +6,30 @@ PROGRAM prog_x
 %NOLOCKGROUP
 %NOPAUSE = COMMAND + TPENABLE + ERROR
 
-%INCLUDE lib_a\a.klt
+%include define_type.m
+%include lib_a\a.klt
+
+t_arr2d(5,10,rarr, REAL)
+
+VAR
+  i,j     : INTEGER
+  rows    : arrx(rarr)
+  a_2d    : arry(rarr)
 
 %INCLUDE lib_a\a.klh
 
-
 BEGIN
+  --run subroutines from lib_a
 	a_clrscr
 	a_do_smthng(1)
+
+  --test type macro from ktransw-macros
+  FOR i=1 TO ARRAY_LEN(a_2d) DO
+    FOR j=1 TO ARRAY_LEN(rows) DO
+      rows[j] = j*i
+    ENDFOR
+
+    a_2d[i] = rows
+  ENDFOR
+
 END prog_x
