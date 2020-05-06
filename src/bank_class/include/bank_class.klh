@@ -1,0 +1,75 @@
+%include header_guard.m
+--oop
+%include oop.m
+
+--start header file
+header_if -- ifndef class
+header_def -- define class
+
+-- Declare functions
+-- ***************
+  -- public
+
+ROUTINE funcname(cntr) (number : INTEGER; ldgr, ldgr_prog : STRING) FROM class_name
+ROUTINE funcname(dsct) FROM class_name
+--getters
+ROUTINE funcname(gnum) : INTEGER FROM class_name
+ROUTINE funcname(gnam) : STRING FROM class_name
+ROUTINE funcname(gfnd) : REAL FROM class_name
+--setters
+ROUTINE funcname(snum) (number : INTEGER) FROM class_name
+ROUTINE funcname(snam) (name : STRING) FROM class_name
+ROUTINE funcname(sfnd) (funds : REAL) FROM class_name
+
+ROUTINE funcname(pact) FROM class_name
+ROUTINE funcname(trfr) (amount : REAL; recipient : INTEGER) FROM class_name
+ROUTINE funcname(dpst) (amount : REAL) FROM class_name
+
+-- declare namespaced members
+-- ****************** 
+-- will be in the format <class_name>__<func_name>
+%mode push
+%mode quote "$"
+EVAL(constructor,cntr)
+%defeval def_constructor $%define alias func$
+EVAL(destructor,dsct)
+%defeval def_destructor $%define alias func$
+--getters
+EVAL(get_account_number,gnum)
+%defeval def_get_number $%define alias func$
+EVAL(get_account_name,gnam)
+%defeval def_get_name $%define alias func$
+EVAL(get_account_funds,gfnd)
+%defeval def_get_funds $%define alias func$
+--setters
+EVAL(set_account_number,snum)
+%defeval def_set_number $%define alias func$
+EVAL(set_account_name,snam)
+%defeval def_set_name $%define alias func$
+EVAL(set_account_funds,sfnd)
+%defeval def_set_funds $%define alias func$
+--other
+EVAL(print_account,pact)
+%defeval def_print_account $%define alias func$
+EVAL(transfer,trfr)
+%defeval def_transfer $%define alias func$
+EVAL(deposit,dpst)
+%defeval def_deposit $%define alias func$
+%mode pop
+-- ******************
+
+-- ** This has to be seperated from quote mode
+-- ** above for some reason
+def_constructor
+def_destructor
+def_get_number
+def_get_name
+def_get_funds
+def_set_number
+def_set_name
+def_set_funds
+def_print_account
+def_transfer
+def_deposit
+
+%endif --end header

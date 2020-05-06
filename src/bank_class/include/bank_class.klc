@@ -1,0 +1,168 @@
+PROGRAM class_name
+%NOBUSYLAMP
+%COMMENT = 'base bank class'
+%NOLOCKGROUP
+%UNINITVARS
+
+%include oop.m
+
+%include errors.klt
+
+VAR
+  acc_number : INTEGER
+  acc_name : STRING[32]
+  acc_funds : REAL
+  ledger : STRING[32]
+  ledger_prog : STRING[32]
+
+%include bank_class.klh
+%include strings.klh
+%include errors.klh
+%include hash.klh
+
+--define local classes
+-- ********************
+%defeval constructor funcname(cntr)
+%defeval desctructor funcname(dsct)
+%defeval get_account_number funcname(gnum)
+%defeval get_account_name funcname(gnam)
+%defeval get_account_funds funcname(gfnd)
+%defeval set_account_number funcname(snum)
+%defeval set_account_name funcname(snam)
+%defeval set_account_funds funcname(sfnd)
+%defeval print_account funcname(pact)
+%defeval transfer funcname(trfr)
+%defeval deposit funcname(dpst)
+-- ********************
+
+--initialization
+ROUTINE constructor
+  VAR
+    b : BOOLEAN
+  BEGIN
+    --set number
+    acc_number = number
+    --link account to ledger
+    ledger = ldgr
+    ledger_prog = ldgr_prog
+    -- link account id to class_name
+    b = hashPut(i_to_s(number), 'class_name', ldgr_prog, ldgr)
+    IF NOT b THEN
+      karelError('Issue in class_name writing to hash', ER_ABORT)
+    ENDIF
+  END constructor
+
+ROUTINE desctructor
+  VAR
+    d_num : ARRAY[1] OF INTEGER
+    d_nam : ARRAY[1] OF STRING[32]
+    d_funds : ARRAY[1] OF REAL
+    b : BOOLEAN
+    e,s : INTEGER
+  BEGIN
+    --remove from ledger
+    -- ** must do first as acc_number could be uninitialized
+    b = hashDel(i_to_s(acc_number), ledger_prog, ledger)
+    IF NOT b THEN
+      karelError('Issue removing '+ i_to_s(acc_number)+' from hash in class_name', ER_ABORT)
+    ENDIF
+
+    -- uninitialize class attributes
+    SET_VAR(e,'class_name','acc_number',d_num[1],s)
+    IF s=12311 THEN s= 0 ;ENDIF
+    CHK_STAT(s)
+    SET_VAR(e,'class_name','acc_name',d_nam[1],s)
+    IF s=12311 THEN s= 0 ;ENDIF
+    CHK_STAT(s)
+    SET_VAR(e,'class_name','acc_funds',d_funds[1],s)
+    IF s=12311 THEN s= 0 ;ENDIF
+    CHK_STAT(s)
+    SET_VAR(e,'class_name','ledger',d_nam[1],s)
+    IF s=12311 THEN s= 0 ;ENDIF
+    CHK_STAT(s)
+    SET_VAR(e,'class_name','ledger_prog',d_nam[1],s)
+    IF s=12311 THEN s= 0 ;ENDIF
+    CHK_STAT(s)
+  END desctructor
+
+--getters
+
+ROUTINE get_account_number
+  BEGIN
+    RETURN(acc_number)
+  END get_account_number
+
+ROUTINE get_account_name
+  BEGIN
+    RETURN(acc_name)
+  END get_account_name
+
+ROUTINE get_account_funds
+  BEGIN
+    RETURN(acc_funds)
+  END get_account_funds
+
+--setters
+
+ROUTINE set_account_number
+  VAR
+    b : BOOLEAN
+  BEGIN
+    --delete previous ledger link
+    b = hashDel(i_to_s(acc_number), ledger_prog, ledger)
+    IF NOT b THEN
+      karelError('Issue removing '+ i_to_s(acc_number)+' from hash in class_name', ER_ABORT)
+    ENDIF
+    --set number
+    acc_number = number
+    --set new account number on ledger
+    b = hashPut(i_to_s(number), 'class_name', ledger_prog, ledger)
+    IF NOT b THEN
+      karelError('Issue in class_name writing to hash', ER_ABORT)
+    ENDIF
+  END set_account_number
+
+ROUTINE set_account_name
+  BEGIN
+    acc_name = name
+  END set_account_name
+
+ROUTINE set_account_funds
+  BEGIN
+    acc_funds = funds
+  END set_account_funds
+
+ROUTINE print_account
+  BEGIN
+    WRITE (CR,'id#', i_to_s(acc_number), ': ')
+    WRITE (acc_name)
+    WRITE (' Funds: $', r_to_s(acc_funds),CR)
+  END print_account
+
+ROUTINE transfer
+  VAR
+    new_bal : REAL
+    prog_name : STRING[12]
+    e,s : INTEGER
+  BEGIN
+    -- set new balance for owner
+    acc_funds = acc_funds - amount
+    --get object of recipient
+    prog_name = hashGet(i_to_s(recipient), ledger_prog, ledger)
+    -- set new balance for recipient
+    GET_VAR(e, prog_name, 'acc_funds', new_bal, s)
+    CHK_STAT(s)
+    new_bal = new_bal + amount
+    SET_VAR(e, prog_name,'acc_funds',new_bal,s)
+    CHK_STAT(s)
+    
+  END transfer
+
+ROUTINE deposit
+  BEGIN
+    acc_funds = acc_funds + amount
+  END deposit
+
+BEGIN
+END class_name
+

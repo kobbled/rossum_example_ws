@@ -1,0 +1,79 @@
+PROGRAM test_bank
+%NOLOCKGROUP
+
+%include hash.klt
+
+VAR
+  accountTable : ARRAY[10] OF hashNode
+
+%include hash.klh
+%include strings.klh
+
+--declare class objects
+--
+-- class accont1
+%defeval class_name accont1
+%include bank_class.klh
+--
+-- class accont2
+%defeval class_name accont2
+%include bank_class.klh
+--
+-- class accont3
+%defeval class_name accont3
+%include bank_class.klh
+
+ROUTINE clearTables
+  VAR
+	  i : INTEGER
+  BEGIN
+    FOR i=1 TO ARRAY_LEN(accountTable) DO
+      accountTable[i].key = ''
+      accountTable[i].val = ''
+    ENDFOR
+  END clearTables
+
+BEGIN
+  --initialize accounts
+  accont1__constructor(2536, 'accountTable', 'test_bank')
+  accont2__constructor(4736, 'accountTable', 'test_bank')
+  accont3__constructor(8162, 'accountTable', 'test_bank')
+  --set account names
+  accont1__set_account_name('Mark')
+  accont2__set_account_name('Daniel')
+  accont3__set_account_name('Sarah')
+  --set account balances
+  accont1__set_account_funds(1000000)
+  accont2__set_account_funds(250000)
+  accont3__set_account_funds(150000)
+
+  --print before transfer
+  CLR_IO_STAT(TPDISPLAY)
+  WRITE (CR,'Starting Balances', CR)
+  WRITE ('-----------------', CR)
+  accont1__print_account
+  accont2__print_account
+  accont3__print_account
+  
+  FORCE_SPMENU(TP_PANEL,SPI_TPUSER,1)
+  PAUSE
+
+  --transfer funds
+  accont1__transfer(200, 8162) -- $200 sent from Mark to Sarah
+  accont2__transfer(-500, 2536) -- $500 requested by Daniel from Mark
+  accont3__deposit(10000) -- $10000 deposited by Sarah
+
+  --print after transfer
+  WRITE (CR,'Final Balances', CR)
+  WRITE ('-----------------', CR)
+  accont1__print_account
+  accont2__print_account
+  accont3__print_account
+
+  --clean up
+  accont1__destructor
+  accont2__destructor
+  accont3__destructor
+
+  FORCE_SPMENU(TP_PANEL,SPI_TPUSER,1)
+END test_bank

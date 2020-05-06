@@ -16,7 +16,7 @@ VAR
   rows    : arrx(rarr)
   a_2d    : arry(rarr)
 
-%INCLUDE lib_a\a.klh
+%include lib_a\a.klh
 
 BEGIN
   --run subroutines from lib_a

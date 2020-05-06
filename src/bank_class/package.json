@@ -1,0 +1,23 @@
+{
+  "manver" : "1",
+  "project" : "bank_class",
+  "description" : "Toy example for using objects in karel",
+  "version" : "0.0.2",
+  "license" : "Apache 2.0",
+  "author" : "kobbled",
+  "source" : [
+    "src/test_bank.kl",
+    "src/classes/accont1.kl",
+    "src/classes/accont2.kl",
+    "src/classes/accont3.kl"
+  ],
+  "includes" : [
+    "include"
+  ],
+  "depends" : [
+    "Strings",
+    "Hash",
+    "errors",
+    "ktransw-macros"
+  ]
+}
