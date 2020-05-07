@@ -1,4 +1,0 @@
--- name class
-%defeval class_name accont3
--- include base class
-%include bank_class.klc

@@ -6,10 +6,7 @@
   "license" : "Apache 2.0",
   "author" : "kobbled",
   "source" : [
-    "src/test_bank.kl",
-    "src/classes/accont1.kl",
-    "src/classes/accont2.kl",
-    "src/classes/accont3.kl"
+    "src/test_bank.kl"
   ],
   "includes" : [
     "include"

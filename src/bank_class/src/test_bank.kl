@@ -10,18 +10,13 @@ VAR
 %include strings.klh
 
 --declare class objects
---
+
 -- class accont1
-%defeval class_name accont1
-%include bank_class.klh
---
+%class accont1('bank_class.klc','bank_class.klh')
 -- class accont2
-%defeval class_name accont2
-%include bank_class.klh
---
+%class accont2('bank_class.klc','bank_class.klh')
 -- class accont3
-%defeval class_name accont3
-%include bank_class.klh
+%class accont3('bank_class.klc','bank_class.klh')
 
 ROUTINE clearTables
   VAR
