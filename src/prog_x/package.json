@@ -7,7 +7,8 @@
   "author" : "G.A. vd. Hoorn",
   "source" : [
     "src/prog_x.kl",
-    "src/test.yml"
+    "src/test.yml",
+    "src/coords.csv"
   ],
   "includes" : [
     "include"
