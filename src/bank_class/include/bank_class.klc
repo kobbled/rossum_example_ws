@@ -4,7 +4,7 @@ PROGRAM class_name
 %NOLOCKGROUP
 %UNINITVARS
 
-%include oop.m
+%include namespace.m
 
 %include errors.klt
 
@@ -22,17 +22,17 @@ VAR
 
 --define local classes
 -- ********************
-%defeval constructor funcname(cntr)
-%defeval desctructor funcname(dsct)
-%defeval get_account_number funcname(gnum)
-%defeval get_account_name funcname(gnam)
-%defeval get_account_funds funcname(gfnd)
-%defeval set_account_number funcname(snum)
-%defeval set_account_name funcname(snam)
-%defeval set_account_funds funcname(sfnd)
-%defeval print_account funcname(pact)
-%defeval transfer funcname(trfr)
-%defeval deposit funcname(dpst)
+%defeval constructor classfunc(cntr)
+%defeval desctructor classfunc(dsct)
+%defeval get_account_number classfunc(gnum)
+%defeval get_account_name classfunc(gnam)
+%defeval get_account_funds classfunc(gfnd)
+%defeval set_account_number classfunc(snum)
+%defeval set_account_name classfunc(snam)
+%defeval set_account_funds classfunc(sfnd)
+%defeval print_account classfunc(pact)
+%defeval transfer classfunc(trfr)
+%defeval deposit classfunc(dpst)
 -- ********************
 
 --initialization
