@@ -6,7 +6,12 @@ PROGRAM class_name
 
 %include namespace.m
 
-%include errors.klt
+CONST
+  ER_WARN          = 0 -- warning no change in task execution
+  ER_WARN_STP      = 1 -- pause all taks and stop all motion 
+  ER_ABORT         = 2 -- abort all tasks and cancel
+  SUCCESS          = 0 -- success constant
+  EXISTS           = 7015 -- Already exists code
 
 VAR
   acc_number : INTEGER
@@ -17,7 +22,6 @@ VAR
 
 %include bank_class.klh
 %include strings.klh
-%include errors.klh
 %include hash.klh
 
 --define local classes
@@ -34,6 +38,30 @@ VAR
 %defeval transfer classfunc(trfr)
 %defeval deposit classfunc(dpst)
 -- ********************
+
+
+--error functions
+ROUTINE CHK_STAT(rec_stat: INTEGER)
+BEGIN
+  IF(rec_stat <> SUCCESS) AND (rec_stat <> EXISTS) THEN
+      POST_ERR(rec_stat,'',0, ER_ABORT)
+  ENDIF
+END CHK_STAT
+
+
+ROUTINE karelError(errStr : STRING; errorType : INTEGER)
+-- Error Type:
+-- 0 : WARNING
+-- 1 : WARNING + SHOWN IN HISTORY
+-- 2 : ABORT
+------------------------------------------
+BEGIN
+  CLR_IO_STAT(TPDISPLAY)
+  WRITE TPDISPLAY(CR,CR, errStr)
+  WRITE TPDISPLAY(CR,CR,CR,CR,CR,CR,CR,CR)
+  FORCE_SPMENU(TP_PANEL, SPI_TPUSER, 1)
+  POST_ERR(122043, '', 0 , errorType)
+END karelError
 
 --initialization
 ROUTINE constructor
