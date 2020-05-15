@@ -22,7 +22,9 @@ VAR
 
 %include bank_class.klh
 %include strings.klh
-%include hash.klh
+
+-- hashstr
+%class hashstr('hash.klc','hashclass.klh','hashstring.klt')
 
 --define local classes
 -- ********************
@@ -74,7 +76,7 @@ ROUTINE constructor
     ledger = ldgr
     ledger_prog = ldgr_prog
     -- link account id to class_name
-    b = hashPut(i_to_s(number), 'class_name', ldgr_prog, ldgr)
+    b = hashstr__put(i_to_s(number), 'class_name', ldgr_prog, ldgr)
     IF NOT b THEN
       karelError('Issue in class_name writing to hash', ER_ABORT)
     ENDIF
@@ -90,7 +92,7 @@ ROUTINE desctructor
   BEGIN
     --remove from ledger
     -- ** must do first as acc_number could be uninitialized
-    b = hashDel(i_to_s(acc_number), ledger_prog, ledger)
+    b = hashstr__delete(i_to_s(acc_number), ledger_prog, ledger)
     IF NOT b THEN
       karelError('Issue removing '+ i_to_s(acc_number)+' from hash in class_name', ER_ABORT)
     ENDIF
@@ -137,14 +139,14 @@ ROUTINE set_account_number
     b : BOOLEAN
   BEGIN
     --delete previous ledger link
-    b = hashDel(i_to_s(acc_number), ledger_prog, ledger)
+    b = hashstr__delete(i_to_s(acc_number), ledger_prog, ledger)
     IF NOT b THEN
       karelError('Issue removing '+ i_to_s(acc_number)+' from hash in class_name', ER_ABORT)
     ENDIF
     --set number
     acc_number = number
     --set new account number on ledger
-    b = hashPut(i_to_s(number), 'class_name', ledger_prog, ledger)
+    b = hashstr__put(i_to_s(number), 'class_name', ledger_prog, ledger)
     IF NOT b THEN
       karelError('Issue in class_name writing to hash', ER_ABORT)
     ENDIF
@@ -176,7 +178,7 @@ ROUTINE transfer
     -- set new balance for owner
     acc_funds = acc_funds - amount
     --get object of recipient
-    prog_name = hashGet(i_to_s(recipient), ledger_prog, ledger)
+    prog_name = hashstr__get(i_to_s(recipient), ledger_prog, ledger)
     -- set new balance for recipient
     GET_VAR(e, prog_name, 'acc_funds', new_bal, s)
     CHK_STAT(s)

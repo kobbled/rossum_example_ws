@@ -1,13 +1,16 @@
 PROGRAM test_bank
 %NOLOCKGROUP
 
-%include hash.klt
+%include hashstring.klt
+t_hash(hashname,hval_def,hashstr)
 
 VAR
-  accountTable : ARRAY[10] OF hashNode
+  accountTable : ARRAY[10] OF hashname
 
-%include hash.klh
 %include strings.klh
+
+-- hash of type string
+%class hashstr('hash.klc','hashclass_full.klh','hashstring.klt')
 
 --declare class objects
 
