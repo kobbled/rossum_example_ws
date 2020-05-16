@@ -21,16 +21,6 @@ VAR
 -- class accont3
 %class accont3('bank_class.klc','bank_class.klh')
 
-ROUTINE clearTables
-  VAR
-	  i : INTEGER
-  BEGIN
-    FOR i=1 TO ARRAY_LEN(accountTable) DO
-      accountTable[i].key = ''
-      accountTable[i].val = ''
-    ENDFOR
-  END clearTables
-
 BEGIN
   --initialize accounts
   accont1__constructor(2536, 'accountTable', 'test_bank')

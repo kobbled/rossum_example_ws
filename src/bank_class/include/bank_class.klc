@@ -174,11 +174,12 @@ ROUTINE transfer
     new_bal : REAL
     prog_name : STRING[12]
     e,s : INTEGER
+    b : BOOLEAN
   BEGIN
     -- set new balance for owner
     acc_funds = acc_funds - amount
     --get object of recipient
-    prog_name = hashstr__get(i_to_s(recipient), ledger_prog, ledger)
+    b = hashstr__get(i_to_s(recipient), prog_name, ledger_prog, ledger)
     -- set new balance for recipient
     GET_VAR(e, prog_name, 'acc_funds', new_bal, s)
     CHK_STAT(s)
