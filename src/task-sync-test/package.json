@@ -1,0 +1,25 @@
+{
+  "manver" : "1",
+  "project" : "task-sync-test",
+  "description" : "Mdofied example from 16.7 in karel manual that actually runs",
+  "version" : "0.0.1",
+  "license" : "MIT",
+  "author" : "",
+  "source" : [
+    "src/main_task.kl",
+    "src/task_a.kl",
+    "src/task_b.kl",
+    "src/move_to_pose.tpp",
+    "src/move_to_home.tpp"
+  ],
+  "includes" : [
+    "include"
+  ],
+  "depends" : [
+    "paths",
+    "pose",
+    "registers",
+    "display",
+    "ktransw-macros"
+  ]
+}

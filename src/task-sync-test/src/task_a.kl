@@ -1,0 +1,34 @@
+PROGRAM task_a
+%NOBUSYLAMP
+%COMMENT = ''
+%NOLOCKGROUP
+%TPMOTION
+%NOPAUSE = COMMAND + TPENABLE + ERROR
+
+VAR 
+  motion_ctrl FROM main_task : INTEGER
+  status : INTEGER
+
+ROUTINE run_home
+  VAR
+    time_out : BOOLEAN
+  BEGIN
+    WRITE TPDISPLAY(CR,'Moving robot home...')
+
+    PEND_SEMA(motion_ctrl, -1, time_out)
+    LOCK_GROUP(1,status)
+
+    CALL_PROG('move_to_home', 0)
+
+    UNLOCK_GROUP(1, status)
+    POST_SEMA(motion_ctrl)
+
+    WRITE TPDISPLAY(CR,'Home complete')
+  END run_home
+
+BEGIN
+  SET_CURSOR(TPFUNC, 1, 4, status)
+  WRITE TPFUNC('HOME', CR)
+  WAIT FOR TPIN[129]+ -- F1 button
+  run_home
+END task_a

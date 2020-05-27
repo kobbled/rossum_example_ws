@@ -1,0 +1,11 @@
+%ifndef source_h
+%define source_h
+
+%include namespace.m
+
+%define prog_name source
+%define prog_name_alias alias
+
+-- namespaced members in format <prog_name_alias>__<func_name>
+
+%endif --source_h

@@ -1,0 +1,59 @@
+PROGRAM main_task
+%NOBUSYLAMP
+%COMMENT = ''
+%NOLOCKGROUP
+%TPMOTION
+%NOPAUSE = COMMAND + TPENABLE + ERROR
+
+VAR 
+  motion_ctrl : INTEGER
+  tsk_a_done : BOOLEAN
+  tsk_b_done : BOOLEAN
+  tmr : INTEGER
+  status : INTEGER
+
+%include display.klh
+
+ROUTINE init_lock
+  BEGIN
+    CLEAR_SEMA (motion_ctrl)
+    POST_SEMA (motion_ctrl)
+  END init_lock
+
+ROUTINE is_tsk_done (task_name:STRING) : BOOLEAN
+  VAR
+    status : INTEGER
+    task_no : INTEGER
+    attr_out : INTEGER
+    dummy : STRING[2]
+  BEGIN
+    GET_TSK_INFO(task_name, task_no, TSK_STATUS, attr_out, dummy, status)
+    IF (attr_out = PG_ABORTED) THEN
+      RETURN(TRUE)
+    ENDIF
+    RETURN(FALSE)
+  END is_tsk_done
+
+BEGIN
+  motion_ctrl = 1
+  init_lock
+
+  display__clear
+  WRITE TPDISPLAY(CR)
+  WRITE TPDISPLAY(CR,'Running tasking example program.')
+  WRITE TPDISPLAY(CR,'Press F1, or F2 to move robot')
+  WRITE TPDISPLAY(CR,'Both tasks must be done before')
+  WRITE TPDISPLAY(CR,'program exists.')
+  display__show
+
+  RUN_TASK('task_a', 1, TRUE, TRUE, 1, status)
+  RUN_TASK('task_b', 1, TRUE, TRUE, 1, status)
+  REPEAT
+    tsk_a_done = is_tsk_done ('task_a')
+    tsk_b_done = is_tsk_done ('task_b')
+    delay(100)
+  UNTIL(tsk_a_done AND tsk_b_done)
+
+  WRITE TPDISPLAY(CR,'program finished')
+
+END main_task

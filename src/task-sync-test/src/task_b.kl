@@ -1,0 +1,74 @@
+PROGRAM task_b
+%NOBUSYLAMP
+%COMMENT = ''
+%NOLOCKGROUP
+%TPMOTION
+%NOPAUSE = COMMAND + TPENABLE + ERROR
+
+%include pose.type.klt
+
+--include path class node type
+%include std_pth_node.klt
+
+CONST
+  PR_NUM = 80
+
+VAR 
+  motion_ctrl FROM main_task : INTEGER
+  work_path  : PATH
+  status : INTEGER
+
+%include registers.klh
+%include pose.klh
+%include paths.klh
+
+--standard path type
+%class stdpth('paths.klc','paths_class.klh','std_pth_node.klt')
+
+ROUTINE do_work
+  VAR
+    origin : XYZWPR
+    time_out : BOOLEAN
+    i : INTEGER
+  BEGIN
+    WRITE TPDISPLAY(CR,'starting hexagon path.')
+    PEND_SEMA(motion_ctrl, -1, time_out)
+    LOCK_GROUP(1,status)
+
+    --set frames
+    pose__set_userframe(5, 1)
+    pose__set_toolframe(3, 1)
+
+    --initialize origin
+    origin.x =0 ; origin.y =0; origin.z =200;
+    origin.w =-90 ; origin.p =0; origin.r =180;
+    CNV_STR_CONF('F U T, 0, 0, 0', origin.config_data, status)
+
+    --set speed
+    registers__set_real(156, 50)
+
+    --generate hexagon path
+    --make pentagon
+    paths__hexagon(200, 5, origin, work_path)
+    
+    --loop through path linearly moving robot to each position
+    FOR i=1 TO PATH_LEN(work_path) DO 
+      SET_POS_REG(PR_NUM, (work_path[i].node_pos), status)
+      WRITE TPDISPLAY(CR,'Moving to position:', i, ' of hexagon path...')
+      CALL_PROG('move_to_pose', 0)
+    ENDFOR
+
+    UNLOCK_GROUP(1, status)
+    POST_SEMA(motion_ctrl)
+    WRITE TPDISPLAY(CR,'hexagon path finished')
+  END do_work
+
+BEGIN
+  SET_CURSOR(TPFUNC, 1, 10, status)
+  WRITE TPFUNC('WORK', CR)
+  --clear path before writing to it
+  stdpth__clear(work_path)
+
+  WAIT FOR TPIN[131]+ -- F2 button
+  do_work
+END task_b
