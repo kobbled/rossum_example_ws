@@ -8,7 +8,7 @@
   "source" : [
     "src/a.kl",
     "src/foo.kl",
-    "src/foo_move.tpp"
+    "src/foo_move.ls"
   ],
   "includes" : [
     "include"

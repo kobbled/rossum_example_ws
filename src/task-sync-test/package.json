@@ -9,8 +9,8 @@
     "src/main_task.kl",
     "src/task_a.kl",
     "src/task_b.kl",
-    "src/move_to_pose.tpp",
-    "src/move_to_home.tpp"
+    "src/move_to_pose.ls",
+    "src/move_to_home.ls"
   ],
   "includes" : [
     "include"
@@ -20,6 +20,7 @@
     "pose",
     "registers",
     "display",
+    "multitask",
     "ktransw-macros"
   ]
 }

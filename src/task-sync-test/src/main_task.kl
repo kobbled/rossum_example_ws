@@ -7,36 +7,19 @@ PROGRAM main_task
 
 VAR 
   motion_ctrl : INTEGER
-  tsk_a_done : BOOLEAN
-  tsk_b_done : BOOLEAN
+  tsk_a_strt, tsk_b_strt : BOOLEAN
+  tsk_a_done, tsk_b_done : BOOLEAN
   tmr : INTEGER
   status : INTEGER
 
 %include display.klh
-
-ROUTINE init_lock
-  BEGIN
-    CLEAR_SEMA (motion_ctrl)
-    POST_SEMA (motion_ctrl)
-  END init_lock
-
-ROUTINE is_tsk_done (task_name:STRING) : BOOLEAN
-  VAR
-    status : INTEGER
-    task_no : INTEGER
-    attr_out : INTEGER
-    dummy : STRING[2]
-  BEGIN
-    GET_TSK_INFO(task_name, task_no, TSK_STATUS, attr_out, dummy, status)
-    IF (attr_out = PG_ABORTED) THEN
-      RETURN(TRUE)
-    ENDIF
-    RETURN(FALSE)
-  END is_tsk_done
+%include multitask.klh
 
 BEGIN
   motion_ctrl = 1
-  init_lock
+  -- make motion control immediately available
+  CLEAR_SEMA (motion_ctrl)
+  POST_SEMA (motion_ctrl)
 
   display__clear
   WRITE TPDISPLAY(CR)
@@ -46,11 +29,13 @@ BEGIN
   WRITE TPDISPLAY(CR,'program exists.')
   display__show
 
-  RUN_TASK('task_a', 1, TRUE, TRUE, 1, status)
-  RUN_TASK('task_b', 1, TRUE, TRUE, 1, status)
+  --start motions tasks
+  tsk_a_strt = task__thread_motion('task_a', 1)
+  tsk_b_strt = task__thread_motion('task_b', 1)
+
   REPEAT
-    tsk_a_done = is_tsk_done ('task_a')
-    tsk_b_done = is_tsk_done ('task_b')
+    tsk_a_done = task__is_task_done('task_a')
+    tsk_b_done = task__is_task_done('task_b')
     delay(100)
   UNTIL(tsk_a_done AND tsk_b_done)
 
