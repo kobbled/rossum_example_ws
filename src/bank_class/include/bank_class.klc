@@ -26,21 +26,6 @@ VAR
 -- hashstr
 %class hashstr('hash.klc','hashclass.klh','hashstring.klt')
 
---define local classes
--- ********************
-%defeval constructor classfunc(cntr)
-%defeval desctructor classfunc(dsct)
-%defeval get_account_number classfunc(gnum)
-%defeval get_account_name classfunc(gnam)
-%defeval get_account_funds classfunc(gfnd)
-%defeval set_account_number classfunc(snum)
-%defeval set_account_name classfunc(snam)
-%defeval set_account_funds classfunc(sfnd)
-%defeval print_account classfunc(pact)
-%defeval transfer classfunc(trfr)
-%defeval deposit classfunc(dpst)
--- ********************
-
 
 --error functions
 ROUTINE CHK_STAT(rec_stat: INTEGER)
