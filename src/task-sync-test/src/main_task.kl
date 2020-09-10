@@ -12,7 +12,7 @@ VAR
   tmr : INTEGER
   status : INTEGER
 
-%include display.klh
+%from display.klh %import clear, show
 %include multitask.klh
 
 BEGIN

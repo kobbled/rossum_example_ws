@@ -18,9 +18,9 @@ VAR
   work_path  : PATH
   status : INTEGER
 
-%include registers.klh
-%include pose.klh
-%include paths.klh
+%from registers.klh %import set_real
+%from pose.klh %import set_userframe, set_toolframe
+%from paths.klh %import hexagon
 
 --standard path type
 %class stdpth('paths.klc','paths_class.klh','std_pth_node.klt')

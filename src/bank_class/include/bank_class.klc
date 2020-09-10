@@ -21,7 +21,7 @@ VAR
   ledger_prog : STRING[32]
 
 %include bank_class.klh
-%include strings.klh
+%from strings.klh %import i_to_s, r_to_s
 
 -- hashstr
 %class hashstr('hash.klc','hashclass.klh','hashstring.klt')
