@@ -5,8 +5,6 @@ PROGRAM task_b
 %TPMOTION
 %NOPAUSE = COMMAND + TPENABLE + ERROR
 
-%include pose.type.klt
-
 --include path class node type
 %include std_pth_node.klt
 
@@ -20,7 +18,7 @@ VAR
 
 %from registers.klh %import set_real
 %from pose.klh %import set_userframe, set_toolframe
-%from paths.klh %import hexagon
+%include paths.klh
 
 --standard path type
 %class stdpth('paths.klc','paths_class.klh','std_pth_node.klt')

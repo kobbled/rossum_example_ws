@@ -1,0 +1,71 @@
+*     Dictionary Form File : Form2.ftx
+*
+*     To compress properly filename format should follow
+*     EXFORMEG.FTX ; Where : -  EX (2 char) to define application prefix
+*                     - FORM (4 char) Dictionary name. This is what the
+*                                     dicitonary will be called. This is
+*                                     used for referencing the form.
+*                     - EG (2 char) identify the language
+
+#include fkeys.fh
+
+.kl form2
+.form
+$-,form2
+    &home &reverse " Title here" &standard  &new_line
+    " label here " &new_line
+    " Integer: " "-%10d" &new_line
+    " Integer: " "-%10d(1,32767)" &new_line
+    " Real: " "-%12f" &new_line
+    " Boolean: " "-%10B(bool_fkey)" &new_line
+    " String: " "-%-20k" &new_line
+    " String: " "-%12k(clear)" &new_line
+    " Byte: " "-%10b" &new_line
+    " Short: " "-%10h" &new_line
+    " DIN[1]: " "-%10P(dout_fkey)" &new_line
+    " AIN[1]: " "-%10pu" " " "-%1S(sim_fkey)" &new_line
+    " AOUT[2]: " "-%10px" " " "-%1S(sim_fkey)" &new_line
+    " Enum Type: " "-%8n(enum_fkey)"  &new_line
+    " Enum Type: " "-%6w(enum_subwin)"  &new_line
+    " Enum Type: " "-%6v(enum_var)"  &new_line
+    " Prog Type: " "-%12pk(1)"  &new_line
+    " Prog Type: " "-%12pk(2)"  &new_line
+    " Prog Type: " "-%12pk(6)"  &new_line
+    " Prog Type: " "-%12pk(16)"  &new_line
+    ^form2_fkey
+.endform
+$-,form2_fkey     *function key labels
+    "  EXIT" &new_line
+
+#eval tf_keys
+
+#eval IO_keys
+
+#eval sim_keys
+
+* Allows to specify the labels for 5 function keys
+$-,enum_fkey
+    "FINE" &new_line
+    "COARSE" &new_line
+    "NOSETTL" &new_line
+    "NODECEL" &new_line
+    "VARDECEL" &new_line
+
+*allows you to specify a maximum of 35 choices in a subwindow
+$-,enum_subwin
+    "Red" * value will be set to 1
+    $-
+    "Blue" * value will be set to 2
+    $-
+    "Green"
+    $-
+    "Yellow"
+    $-
+    "\a"  * specifies a subwindow list
+  
+*allows you to specify choices for the subwindow in a
+* variable whose type is an ARRAY[m] of STRING[n]
+$-,enum_var
+    "testform" &new_line * program name of variable
+    "choices" &new_line * variable name containing choices
+

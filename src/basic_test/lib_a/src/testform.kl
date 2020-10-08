@@ -1,0 +1,112 @@
+PROGRAM testform
+%NOLOCKGROUP
+
+TYPE
+  mystruc = STRUCTURE
+    byte_var1 : BYTE
+    short_var : SHORT
+  ENDSTRUCTURE
+
+--must match from definition in .ftx file
+%include form2.kl
+
+--define form properties
+%include testform.klt
+
+VAR
+  value_array : ARRAY[20] OF STRING[30]
+  choices : ARRAY[5] OF STRING[12]
+  b : BOOLEAN
+  --form vars
+  int_var1 : INTEGER
+  int_var2 : INTEGER
+  real_var : REAL
+  bool_var : BOOLEAN
+  str_var1 : STRING[20]
+  str_var2 : STRING[12]
+  struct_var : mystruc
+  color_sel1 : INTEGER
+  color_sel2 : INTEGER
+  prog_name1 : STRING[12]
+  prog_name2 : STRING[12]
+  prog_name3 : STRING[12]
+  prog_name4 : STRING[12]
+
+
+--helper functions
+%include forms.klh
+
+-- populate array with variable mappings to form 
+ROUTINE pop_varlist
+  BEGIN
+    value_array[1] = '['+prog_str+']int_var1'
+    value_array[2] = '['+prog_str+']int_var2'
+    value_array[3] = '['+prog_str+']real_var'
+    value_array[4] = '['+prog_str+']bool_var'
+    value_array[5] = '['+prog_str+']str_var1'
+    value_array[6] = '['+prog_str+']str_var2'
+    value_array[7] = '['+prog_str+']struct_var.byte_var1'
+    value_array[8] = '['+prog_str+']struct_var.short_var'
+    value_array[9] = 'din[1]'
+    value_array[10] = 'ain[1]'
+    value_array[11] = 'ain[1]'
+    value_array[12] = 'aout[2]'
+    value_array[13] = 'aout[2]'
+    value_array[14] = '[*system*]$group[1].$termtype'
+    value_array[15] = '['+prog_str+']color_sel1'
+    value_array[16] = '['+prog_str+']color_sel2'
+    value_array[17] = '['+prog_str+']prog_name1'
+    value_array[18] = '['+prog_str+']prog_name2'
+    value_array[19] = '['+prog_str+']prog_name3'
+    value_array[20] = '['+prog_str+']prog_name4'
+  END pop_varlist
+
+--subwindow choices
+ROUTINE pop_subwin
+  BEGIN
+    choices[1] = '' --not used
+    choices[2] = 'Red'
+    choices[3] = 'Blue'
+    choices[4] = 'Green'
+    choices[5] = 'Yellow'
+  END pop_subwin
+
+--intialized values for variables
+ROUTINE init_vars
+  BEGIN
+    --initialize vars
+    int_var1 = 12345
+    --int_var2 uninit
+    real_var  = 0
+    bool_var = TRUE
+    str_var1 = 'This is a test'
+    --str_var2 uninit
+    struct_var.byte_var1 = 10
+    struct_var.short_var = 30
+    color_sel1 = 3
+    color_sel2 = 1
+  END init_vars
+
+BEGIN
+  --populate array with variable names
+  --of this program
+  pop_varlist
+  --subwindow choices are defined in array
+  --choices
+  pop_subwin
+  --initialize variables
+  init_vars
+
+  --load form
+  b = forms__load(dict_file, dict_str)
+
+  --show form
+  IF b THEN
+    forms__show(dict_str, value_array)
+  ELSE
+    WRITE TPERROR(CR,'Form was not able to render.')
+    ABORT
+  ENDIF
+
+END testform
+

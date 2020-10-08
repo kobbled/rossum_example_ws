@@ -8,11 +8,14 @@
   "source" : [
     "src/a.kl",
     "src/foo.kl",
-    "src/foo_move.ls"
+    "src/foo_move.ls",
+    "src/exformeg.ftx",
+    "src/testform.kl"
   ],
   "includes" : [
     "include"
   ],
   "depends" : [
+    "forms"
   ]
 }

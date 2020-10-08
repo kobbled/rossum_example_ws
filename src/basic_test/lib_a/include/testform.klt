@@ -1,0 +1,4 @@
+--user macros for defining form properties
+%define prog_str 'testform'
+%define dict_str 'FORM'
+%define dict_file 'exformeg'

@@ -6,9 +6,9 @@ PROGRAM foo
 %NOLOCKGROUP
 %NOPAUSE = COMMAND + TPENABLE + ERROR
 
-%INCLUDE lib_a\a.klt
+%include lib_a\a.klt
 
-%INCLUDE klrdutil.kl
+%include klrdutil.kl
 
 
 BEGIN
