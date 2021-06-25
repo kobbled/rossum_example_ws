@@ -6,10 +6,18 @@ PROGRAM prog_x
 %NOLOCKGROUP
 %NOPAUSE = COMMAND + TPENABLE + ERROR
 
-%include define_type.m
 %include lib_a\a.klt
 
-t_arr2d(5,10,rarr, REAL)
+%mode push
+%mode string QQQ "`" "`" "\\"
+%define t_arr2d(y,x,n,t) `TYPE
+  #3_0 = ARRAY[x] OF #4
+  #3_1 = ARRAY[y] OF #3_0`
+%define arrx(n) %eval #1_0
+%define arry(n) %eval #1_1
+%mode pop
+
+t_arr2d(5,10,rarr,REAL)
 
 VAR
   i,j     : INTEGER
