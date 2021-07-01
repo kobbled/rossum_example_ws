@@ -1,0 +1,19 @@
+{
+  "manver" : "1",
+  "project" : "",
+  "description" : "",
+  "version" : "0.0.1",
+  "license" : "MIT",
+  "author" : "",
+  "source" : [
+    "src/source.kl"
+  ],
+  "includes" : [
+    "include"
+  ],
+  "depends" : [
+    "ktransw-macros"
+  ],
+  "external_paths" : [
+  ]
+}

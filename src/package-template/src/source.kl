@@ -1,0 +1,11 @@
+PROGRAM source
+%NOBUSYLAMP
+%COMMENT = ''
+%NOLOCKGROUP
+%NOPAUSE = COMMAND + TPENABLE + ERROR
+
+%include source.klt
+%include source.klh
+
+BEGIN
+END source
