@@ -1,0 +1,46 @@
+PROGRAM hello
+%NOBUSYLAMP
+%COMMENT = ''
+%NOLOCKGROUP
+%NOPAUSE = COMMAND + TPENABLE + ERROR
+%NOPAUSESHFT
+
+VAR
+  status : INTEGER
+
+--karel utility
+%include klrdutil.kl
+
+BEGIN
+  --clear window
+  clear_win(TPDISPLAY, status)
+  clear_win(TPPROMPT, status)
+  clear_win(TPFUNC, status)
+
+  --show TPDISPLAY
+  FORCE_SPMENU(TP_PANEL, SPI_TPUSER, 1)
+
+  --write prompt for the user
+  WRITE TPPROMPT('Press "GO" when ready')
+  --button options for the user
+  WRITE TPFUNC('  GO    STOP    QUIT')
+  -- GO = F1 = TPIN[129]
+  -- STOP = F2 = TPIN[131]
+  -- QUIT = F3 = TPIN[132]
+
+  -- wait for button to be pressed
+  WAIT FOR TPIN[129] OR TPIN[131] OR TPIN[132]
+
+  IF TPIN[129] THEN
+    --write a statement to TPDISPLAY
+    WRITE('Hello World!',CR)
+  ENDIF
+  IF TPIN[131] THEN
+    WRITE('You stopped me!',CR)
+  ENDIF
+  IF TPIN[132] THEN
+    WRITE('Goodbye World :(',CR)
+  ENDIF
+
+  WRITE('EOF',CR)
+END hello

@@ -1,0 +1,34 @@
+PROGRAM helloterm
+%NOBUSYLAMP
+%COMMENT = ''
+%NOLOCKGROUP
+
+-- Use with terminal command
+--```
+--curl http://127.0.0.1/KAREL/helloterm
+--```
+
+VAR
+  entry, status : INTEGER
+  response     : FILE
+  ip : STRING[14]
+
+BEGIN
+  --clear response
+  CLR_IO_STAT(response)
+  IF IO_STATUS(response) <> 0 THEN CLOSE FILE response; ENDIF
+
+  --create a repsonse file for 
+  OPEN FILE response ('RW', 'RD:RESPONSE.HTM')
+
+  --get ip address of robot
+  --..todo:: Don't know the variable that holds the robot IP address
+  GET_VAR(entry, '*system*', '$EIP_CONN[1].$HOST', ip, status)
+
+  WRITE response ('Hello remote user!', CR)
+  WRITE response ('Greetings from ', ip, '.', CR)
+  WRITE response ('EOF', CR)
+
+  CLOSE FILE response
+
+END helloterm

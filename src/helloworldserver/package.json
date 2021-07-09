@@ -1,0 +1,20 @@
+{
+  "manver" : "1",
+  "project" : "helloWorldServer",
+  "description" : "",
+  "version" : "0.0.1",
+  "license" : "MIT",
+  "author" : "",
+  "source" : [
+    "src/hello_server.kl"
+  ],
+  "includes" : [
+    "include"
+  ],
+  "depends" : [
+    "ktransw-macros",
+    "socket"
+  ],
+  "external_paths" : [
+  ]
+}
