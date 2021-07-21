@@ -1,0 +1,19 @@
+{
+  "manver" : "1",
+  "project" : "tpp_examples",
+  "description" : "A testing example of tpp",
+  "version" : "0.0.1",
+  "license" : "MIT",
+  "author" : "",
+  "source" : [
+    "src/tst_tpp_setpr.tpp"
+  ],
+  "includes" : [
+    "include"
+  ],
+  "depends" : [
+    "ktransw-macros",
+    "pose",
+    "display"
+  ]
+}

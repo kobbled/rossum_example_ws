@@ -1,3 +1,5 @@
 # Roboguide / Fanuc
 *.pc
 *.tp
+*build/
+*desktop.ini
