@@ -17,7 +17,6 @@ VAR
   socket : T_SOCKET
   ComFile : FILE
   recv_str : ARRAY[10] OF STRING[64]
-  n_bytes : INTEGER
   force_abort : BOOLEAN
 
 %include errors.klh
