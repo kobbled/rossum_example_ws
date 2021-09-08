@@ -6,7 +6,8 @@
   "license" : "MIT",
   "author" : "",
   "source" : [
-    "src/tst_tpp_setpr.tpp"
+    "src/tst_tpp_setpr.tpp",
+    "src/tst_user_input.tpp"
   ],
   "includes" : [
     "include"
