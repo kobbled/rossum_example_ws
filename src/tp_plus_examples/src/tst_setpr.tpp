@@ -2,13 +2,6 @@
 # Example showing how to set position with Ka-Boost
 # *****************
 
-# ..warning:: set position register numbers for each controller
-pr1 := PR[60]
-pr2 := PR[61]
-pr3 := PR[62]
-pr4 := PR[63]
-pr5 := PR[64]
-
 use_uframe 1
 use_utool 1
 
@@ -20,13 +13,16 @@ usershow()
 # -----------
 
 #set parent frame (x, y, z, w, p, r)
+pr1 := LPR[]
 pr1.group(1) = Pos::setxyz(500, 500, 0, 90, 0, 180)
 pr1.group(1) = Pos::setcfg('F U T, 0, 0, 0')
 
 #set child frame
+pr2 := LPR[]
 pr2.group(1) = Pos::setxyz(1000, 1000, 0, 45, 45, 0)
 
 #child frame with respect to world frame
+pr3 := LPR[]
 pr3 = Pos::mult(&pr1, &pr2)
 
 #print frame (reg num, group)
@@ -37,9 +33,11 @@ printpr(&pr3, 1)
 # -----------
 
 #set first pr joints
+pr4 := LPR[]
 pr4.group(1) = Pos::setjnt6(0, -20, 0, 180, 90, 0)
 
 #set addition
+pr5 := LPR[]
 pr5.group(1) = Pos::setjnt6(0, 20, 0, -180, -90, 0)
 
 #add joints together

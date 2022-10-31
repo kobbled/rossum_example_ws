@@ -18,7 +18,7 @@ VAR
 
 %from registers.klh %import set_real
 %from pose.klh %import set_userframe, set_toolframe
-%include paths.klh
+%include pathlib.klh
 
 --standard path type
 %class stdpth('paths.klc','paths_class.klh','std_pth_node.klt')

@@ -6,8 +6,10 @@
   "license" : "MIT",
   "author" : "",
   "source" : [
-    "src/tst_tpp_setpr.tpp",
-    "src/tst_user_input.tpp"
+    "src/process.tpp",
+    "src/tst_setpr.tpp",
+    "src/tst_user_input.tpp",
+    "src/tppenv.kl"
   ],
   "includes" : [
     "include"
@@ -15,6 +17,8 @@
   "depends" : [
     "ktransw-macros",
     "pose",
-    "display"
-  ]
+    "display",
+    "hash_registers"
+  ],
+  "tpp_compile_env" : {"name" : "tppenv", "clear" : false}
 }

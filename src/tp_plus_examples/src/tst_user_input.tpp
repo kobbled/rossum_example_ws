@@ -5,22 +5,18 @@
 userclear()
 usershow()
 
-number    := R[56]
+number    := LR[]
 number = userReadInt('enter length of ascii tree.')
+number -=  1
 
-i := R[46]
-Dummy_1   := R[225]
-Dummy_1 = number - 1
-for i in (0 to Dummy_1)
+for i in (0 to number)
 
-  Dummy_2   := R[226]
-  Dummy_2 = Dummy_1 - i
-  j := R[48]
-  for j in (0 to Dummy_2)
+  spaces   := LR[]
+  spaces = number - i
+  for j in (0 to spaces)
     print(' ')
   end
 
-  k         := R[50]
   for k in (0 to i)
     print('* ')
   end
