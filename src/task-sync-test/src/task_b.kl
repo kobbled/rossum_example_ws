@@ -3,13 +3,39 @@ PROGRAM task_b
 %COMMENT = ''
 %NOLOCKGROUP
 %TPMOTION
-%NOPAUSE = COMMAND + TPENABLE + ERROR
+%NOPAUSE = ERROR + TPENABLE + COMMAND
+%NOABORT = ERROR + COMMAND
 
---include path class node type
-%include std_pth_node.klt
+%include math.klt
 
-CONST
-  PR_NUM = 80
+
+--USER DEFINITIONS
+
+%define USERFRAME 9
+%define TOOLFRAME 3
+%define SPEED_REGISTER 156
+%define POSEREG_MOTION_REG 80
+
+%define POLYGON_RADIUS 50
+%define POLYGON_POINTS 5
+
+%mode push
+%mode string QQQ "`" "`" "\\"
+%define set_origin `
+
+-- *******USER IMPORTANT***********
+-- Change origin to reflect robot cell
+-- you are building
+-- ******************
+
+origin.x = POLYGON_RADIUS ; origin.y = POLYGON_RADIUS; origin.z = 50;
+origin.w = 180 ; origin.p = 0; origin.r = 0;
+CNV_STR_CONF('F U T, 0, 0, 0', origin.config_data, status)
+
+`
+%mode pop
+
+--END OF USER DEFINITIONS
 
 VAR 
   motion_ctrl FROM main_task : INTEGER
@@ -18,10 +44,44 @@ VAR
 
 %from registers.klh %import set_real
 %from pose.klh %import set_userframe, set_toolframe
-%include pathlib.klh
+%from math.klh %import translate, rotz
 
---standard path type
-%class stdpth('paths.klc','paths_class.klh','std_pth_node.klt')
+ROUTINE clear_pth(p : PATH)
+  VAR
+    i, status : INTEGER
+  BEGIN
+    i = PATH_LEN(p)
+    WHILE PATH_LEN(p) > 0 DO
+		  DELETE_NODE(p,i,status)
+      i = i - 1
+	  ENDWHILE
+  END clear_pth
+
+ROUTINE draw_hexagon(radius : REAL; verticies : INTEGER; origin : XYZWPR; out_poly : PATH)
+  VAR 
+    i, pthlen : INTEGER
+    status : INTEGER
+    ang : REAL
+    p : XYZWPR
+    trans : VECTOR
+    vert : VECTOR
+    poly_count : INTEGER
+  BEGIN
+    pthlen = 1
+    --make radius vector
+    trans.x = 0 ; trans.y = radius ; trans.z = 0 ;
+
+    FOR i=0 TO (verticies-1) DO
+      ang = (i*2*M_PI/verticies)*M_RAD2DEG
+      p = math__rotz(math__translate(math__rotz((origin), ang), trans), -ang)
+      vert.x = p.x ; vert.y = p.y ; vert.z = p.z ;
+
+      APPEND_NODE(out_poly, status)
+      out_poly[pthlen].node_pos = p
+      --increment path length as it may not be tha same as i+1
+      pthlen = pthlen + 1
+    ENDFOR
+  END draw_hexagon
 
 ROUTINE do_work
   VAR
@@ -34,27 +94,35 @@ ROUTINE do_work
     LOCK_GROUP(1,status)
 
     --set frames
-    pose__set_userframe(5, 1)
-    pose__set_toolframe(3, 1)
+    pose__set_userframe(USERFRAME, 1)
+    pose__set_toolframe(TOOLFRAME, 1)
 
     --initialize origin
-    origin.x =0 ; origin.y =0; origin.z =200;
-    origin.w =-90 ; origin.p =0; origin.r =180;
-    CNV_STR_CONF('F U T, 0, 0, 0', origin.config_data, status)
+    -- *******USER IMPORTANT***********
+    -- Change origin to reflect robot cell
+    -- you are building
+    -- ******************
+    set_origin
 
     --set speed
-    registers__set_real(156, 50)
+    registers__set_real(SPEED_REGISTER, 50)
 
     --generate hexagon path
     --make pentagon
-    paths__hexagon(200, 5, origin, work_path)
+    draw_hexagon(POLYGON_RADIUS, POLYGON_POINTS, origin, work_path)
     
     --loop through path linearly moving robot to each position
     FOR i=1 TO PATH_LEN(work_path) DO 
-      SET_POS_REG(PR_NUM, (work_path[i].node_pos), status)
+      SET_POS_REG(POSEREG_MOTION_REG, (work_path[i].node_pos), status)
       WRITE TPDISPLAY(CR,'Moving to position:', i, ' of hexagon path...')
       CALL_PROG('move_to_pose', 0)
     ENDFOR
+
+    --got back to first position
+    SET_POS_REG(POSEREG_MOTION_REG, (work_path[1].node_pos), status)
+    WRITE TPDISPLAY(CR,'Moving to position:', 1, ' of hexagon path...')
+    CALL_PROG('move_to_pose', 0)
+
 
     UNLOCK_GROUP(1, status)
     POST_SEMA(motion_ctrl)
@@ -65,7 +133,7 @@ BEGIN
   SET_CURSOR(TPFUNC, 1, 10, status)
   WRITE TPFUNC('WORK', CR)
   --clear path before writing to it
-  stdpth__clear(work_path)
+  clear_pth(work_path)
 
   WAIT FOR TPIN[131]+ -- F2 button
   do_work

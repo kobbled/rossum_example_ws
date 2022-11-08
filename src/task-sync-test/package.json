@@ -16,7 +16,7 @@
     "include"
   ],
   "depends" : [
-    "pathlib",
+    "math",
     "pose",
     "registers",
     "display",
