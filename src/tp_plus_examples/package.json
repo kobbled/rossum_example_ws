@@ -20,5 +20,5 @@
     "display",
     "hash_registers"
   ],
-  "tpp_compile_env" : {"name" : "tppenv", "clear" : false}
+  "tpp_compile_env" : {"name" : "tppenv", "clear" : false, "config" : "config-env"}
 }

@@ -1,5 +1,5 @@
 def process()
-  using env
+  using Positioner, Tool1, Lam
 
   TP_GROUPMASK = "1,*,1,*,*"
 
