@@ -1,3 +1,28 @@
+namespace Positioner
+  frame := UTOOL[3]
+  frame.group(1).pose -> [0,0,0,0,0,0]
+  home := PR[4]
+  home.group(1).pose -> [0,0,0,0,0,0]
+end
+
+namespace Tool1
+  frame := UTOOL[1]
+  frame.group(1).pose -> [0,0,0,0,0,0]
+end
+
+namespace Lam
+  power          := R[60]
+  power = 3000
+  flowrate       := R[26]
+  flowrate = 1
+  speed          := R[61]
+  speed = 15
+  strt           := DO[3]
+  strt = off
+  enable         := DO[1]
+  enable = off
+end
+
 def process()
   using Positioner, Tool1, Lam
 
@@ -12,6 +37,8 @@ def process()
   Lam::set_parameters(&Lam::power, &Lam::flowrate, &Lam::speed)
   Lam::enable = on
 
+  l := LR[]
+  layers := LR[]
   while l < layers
 
     #pause after each layer
@@ -25,6 +52,10 @@ def process()
     
     #run through path
     Lam::strt = on
+
+    j := LR[]
+    passes := LR[]
+    program_name := SR[1]
     while j < passes
       call program_name()
     end
