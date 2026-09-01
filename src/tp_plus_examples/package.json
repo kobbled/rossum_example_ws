@@ -12,7 +12,10 @@
     "src/tppenv.kl"
   ],
   "includes" : [
-    "include"
+    "include",
+    "C:/Users/MattDewar/OneDrive - Group Six Technologies Inc/Programing/git/G6-Templates/gst-envs/cell2",
+    "C:/Users/MattDewar/OneDrive - Group Six Technologies Inc/Programing/git/G6-Templates/gst-envs/shared",
+    "C:/Users/MattDewar/OneDrive - Group Six Technologies Inc/Programing/git/G6-Templates/fanuc-cell2/config"
   ],
   "depends" : [
     "ktransw-macros",
